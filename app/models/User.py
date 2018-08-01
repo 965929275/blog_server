@@ -18,6 +18,23 @@ class LocalAuth(db.Model):
         }
         return json_local_auth
 
+    def generate_reset_token(self,expiration = 3600):
+        s = Serializer(current_app.config['SECRET_KEY'], expiration)
+        return s.dumps({'confirm': self.id})
+
+    @staticmethod
+    def confirm(token):
+        s = Serializer(current_app.config['SECRET_KEY'])
+        try:
+            token_data = s.loads(token)
+        except:
+            print('token 过期')
+            return None
+        user = LocalAuth.query.filter_by(id=token_data.get('confirm')).first()
+        return user
+
+
+
 # 用户信息表
 class Profile(db.Model):
     __tablename__ = 'user_profile'
