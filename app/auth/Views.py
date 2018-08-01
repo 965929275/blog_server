@@ -167,9 +167,7 @@ class ResetEmailConfirm(Resource):
         user_profile = Profile.query.filter_by(id=user_local_auth.id).first()
         user_local_auth.email = new_email
         user_profile.email = new_email
-        print(new_email)
         db.session.add(user_local_auth)
         db.session.add(user_profile)
         db.session.commit()
         return make_response(Code.OK,message='修改邮箱成功')
-        # user_profile = LocalAuth.confirm(self.args.get('token'))

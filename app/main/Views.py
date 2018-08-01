@@ -5,7 +5,7 @@
 # @Author  : Tricky
 from flask import jsonify,request
 from flask_restful import Resource,reqparse
-from ..models.User import LocalAuth,Profile
+from ..models.Articles import Articles
 from app import db
 import uuid
 from app.Util.Email import send_mail
@@ -16,3 +16,11 @@ class HelloWorld(Resource):
     def get(self):
         a = 'hello,world'
         return make_response(Code.OK,data=a)
+
+
+class Test(Resource):
+    def post(self):
+        name = request.json.get('name')
+        artcile = Articles.query.filter_by(title=name).first()
+        print(artcile)
+        return make_response()

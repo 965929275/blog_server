@@ -46,6 +46,8 @@ class Profile(db.Model):
     confirmed = db.Column(db.Boolean,default=False)
     register_time = db.Column(db.DateTime(),default=datetime.now)
 
+    # articles = db.relationship('Articles',backref='author',lazy='dynamic')
+
     def to_json(self):
         json_profile = {
             'username': self.username
