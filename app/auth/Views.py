@@ -7,7 +7,7 @@ import uuid
 from app.Util.Email import send_mail
 from app.Util.MakeResponse import make_response
 from app.Util.Code import Code
-from flask_login import login_required
+from flask_login import login_required,login_user,logout_user
 
 
 class HelloWorld(Resource):
@@ -55,6 +55,7 @@ class Login(Resource):
         password = request.json.get('password')
         user = LocalAuth.query.filter_by(username = username).first()
         if user is not None and user.password == password:
+            login_user(user)
             return make_response()
         elif user is not None and user.password != password:
             return make_response(Code.BAD_REQUEST,message='密码错误')
@@ -64,7 +65,8 @@ class Login(Resource):
 
 class Logout(Resource):
     def get(self):
-        pass
+        logout_user()
+        return make_response()
 
 
 # 确认账户，通过邮箱与用户取得联系，发送确认链接给用户，从而确认用户
